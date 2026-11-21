@@ -10,5 +10,49 @@
     "label": "Erweiterungsmenü schwach anzeigen",
     "type": "checkbox",
     "defaultValue": true
+  },
+  {
+    "property": "mod.visible_controls.motion",
+    "label": "Sidebar-Animation",
+    "type": "dropdown",
+    "defaultValue": "slide",
+    "options": [
+      {
+        "label": "Gleiten",
+        "value": "slide"
+      },
+      {
+        "label": "Sanft auftauchen",
+        "value": "fade"
+      },
+      {
+        "label": "Kompakt",
+        "value": "compact"
+      },
+      {
+        "label": "Keine",
+        "value": "none"
+      }
+    ]
+  },
+  {
+    "property": "mod.visible_controls.speed",
+    "label": "Animationsgeschwindigkeit",
+    "type": "dropdown",
+    "defaultValue": "normal",
+    "options": [
+      {
+        "label": "Schnell",
+        "value": "fast"
+      },
+      {
+        "label": "Normal",
+        "value": "normal"
+      },
+      {
+        "label": "Langsam",
+        "value": "slow"
+      }
+    ]
   }
 ]

@@ -2,7 +2,7 @@
 // @name           Only Sidebar Controls
 // @description    Floating controls for Zen's compact sidebar layout
 // @author         levox00
-// @version        1.0.1
+// @version        1.1.0
 // ==/UserScript==
 // This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 (() => {
@@ -42,6 +42,43 @@
   const pageArea = doc.getElementById('tabbrowser-tabpanels');
   let trackingFrame = 0;
   let trackingUntil = 0;
+  let lastSidebarOrigin = null;
+  let sidebarWasOpen = false;
+  let sidebarMotion = null;
+  // Shared helpers stay deterministic so each preset can be tested separately.
+  function motionFrames(preset, dx, dy) {
+    if (preset === 'fade') return [{opacity: 0}, {opacity: 0.1}];
+    if (preset === 'compact') return [{transform: `translate(${dx * 0.35}px, ${dy * 0.35}px) scale(0.96)`}, {transform: 'translate(0px, 0px) scale(1)'}];
+    return [{transform: `translate(${dx}px, ${dy}px)`}, {transform: 'translate(0px, 0px)'}];
+  }
+  function motionDuration(speed) {
+    return ({fast: 150, normal: 210, slow: 280})[speed] ?? 210;
+  }
+  function rememberSidebarOrigin() {
+    const side = toolbox.getBoundingClientRect();
+    if (side.width <= 0 || side.height <= 0) return;
+    const native = doc.getElementById('back-button')?.getBoundingClientRect();
+    const onSidebar = native && native.width > 0 && native.height > 0 && native.left < side.right && native.right > side.left && native.top < side.bottom && native.bottom > side.top;
+    lastSidebarOrigin = onSidebar ? {x:native.left, y:native.top} : {
+      x: root.getAttribute('zen-right-side') === 'true' ? side.left : Math.max(side.left, side.right - bar.getBoundingClientRect().width),
+      y: Math.max(0, side.top)
+    };
+  }
+  function animateFromSidebar() {
+    if (sidebarMotion) { sidebarMotion.cancel(); sidebarMotion = null; }
+    const preset = Services.prefs.getStringPref('mod.visible_controls.motion', 'slide');
+    if (preset === 'none' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    position();
+    const target = bar.getBoundingClientRect();
+    const fallback = root.getAttribute('zen-right-side') === 'true' ? 32 : -32;
+    const dx = lastSidebarOrigin ? Math.max(-400, Math.min(400, lastSidebarOrigin.x - target.left)) : fallback;
+    const dy = lastSidebarOrigin ? Math.max(-160, Math.min(160, lastSidebarOrigin.y - target.top)) : 0;
+    const duration = motionDuration(Services.prefs.getStringPref('mod.visible_controls.speed', 'normal'));
+    try {
+      sidebarMotion = bar.animate(motionFrames(preset, dx, dy), {duration, easing:'cubic-bezier(0.23, 1, 0.32, 1)'});
+      sidebarMotion.id = 'only-sidebar-controls-transition';
+    } catch (error) { console.warn('[Only Sidebar Controls] Animation unavailable', error); }
+  }
   // Keep controls on the page, also when compact toolbars float over it.
   function calculateBounds(page, sidebar, topbar, sidebarOpen, topbarOpen, sidebarRight) {
     let left = page.left, right = page.right, top = page.top;
@@ -58,6 +95,7 @@
   const isTopbarOpen = () => !!navWrapper && ['zen-has-hover','has-popup-menu','zen-compact-mode-active'].some(a => navWrapper.hasAttribute(a));
   const position = () => {
     if (!pageArea) return;
+    if (isSidebarOpen()) rememberSidebarOrigin();
     const rect = pageArea.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) return;
     const box = calculateBounds(rect, toolbox.getBoundingClientRect(), navWrapper?.getBoundingClientRect(), isSidebarOpen(), isTopbarOpen(), root.getAttribute('zen-right-side') === 'true');
@@ -84,7 +122,14 @@
   doc.addEventListener('transitionrun', trackTransition, true);
   doc.addEventListener('transitionend', position, true);
   const update = () => {
+    const isOpen = isSidebarOpen();
+    if (isOpen) {
+      rememberSidebarOrigin();
+      if (sidebarMotion) { sidebarMotion.cancel(); sidebarMotion = null; }
+    }
     trackTransition();
+    if (sidebarWasOpen && !isOpen) animateFromSidebar();
+    sidebarWasOpen = isOpen;
     const show = !root.hasAttribute('customizing') && root.getAttribute('inDOMFullscreen') !== 'true';
     bar.toggleAttribute('data-visible', show);
     buttons.back.disabled = !window.gBrowser.canGoBack;
@@ -105,6 +150,7 @@
   cleanupInstance = () => {
     observer.disconnect(); sizeObserver.disconnect();
     if (trackingFrame) window.cancelAnimationFrame(trackingFrame);
+    if (sidebarMotion) { sidebarMotion.cancel(); sidebarMotion = null; }
     window.removeEventListener('resize', trackTransition);
     doc.removeEventListener('transitionrun', trackTransition, true);
     doc.removeEventListener('transitionend', position, true);
@@ -130,6 +176,9 @@
   const defaults = Services.prefs.getDefaultBranch('');
   for (const name of ['mod.visible_controls.navigation', 'mod.visible_controls.extensions']) {
     if (Services.prefs.getPrefType(name) === 0) defaults.setBoolPref(name, true);
+  }
+  for (const [name, value] of [['mod.visible_controls.motion', 'slide'], ['mod.visible_controls.speed', 'normal']]) {
+    if (Services.prefs.getPrefType(name) === 0) defaults.setStringPref(name, value);
   }
   if (typeof window.addUnloadListener === 'function') window.addUnloadListener(cleanup);
   window.addEventListener('unload', cleanup, {once: true});

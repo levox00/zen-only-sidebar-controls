@@ -1,4 +1,4 @@
-/* Only Sidebar Controls 1.0.1 — MPL-2.0; icon attribution in README. */
+/* Only Sidebar Controls 1.1.0 — MPL-2.0; icon attribution in README. */
 #visible-controls-overlay {
   display: flex !important;
   position: fixed;
@@ -6,15 +6,16 @@
   top: var(--vc-page-top, 0px);
   left: var(--vc-page-left, 0px);
   gap: 0;
-  padding: 0;
+  padding: var(--toolbarbutton-outer-padding, 2px);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  --visible-controls-icon-color: light-dark(#151515, #fff);
+  --visible-controls-icon-color: var(--toolbar-color, light-dark(#151515, #fff));
   color: var(--visible-controls-icon-color);
   transition: opacity 160ms ease, visibility 0s linear 160ms;
-  background: transparent;
-  box-shadow: none;
+  background: var(--toolbar-bgcolor, var(--arrowpanel-background, light-dark(#f5f5f5, #252525)));
+  border-radius: var(--toolbarbutton-border-radius, 6px);
+  box-shadow: var(--zen-big-shadow, 0 1px 4px #0003);
 }
 #visible-controls-overlay[data-visible] { opacity: .1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
 #visible-controls-overlay[data-visible]:is(:hover, :focus-within) { opacity: 1; }
@@ -29,6 +30,7 @@
   height: 32px;
   padding: 0;
   border: 0;
+  border-radius: var(--toolbarbutton-border-radius, 6px);
   background: transparent;
   color: transparent !important;
   font-size: 0 !important;
@@ -51,9 +53,10 @@
 #visible-controls-extensions::before {
   mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%2362757e%22%20fill-rule%3D%22evenodd%22%20d%3D%22M14.338%2019.333H18c.46%200%20.833-.373.833-.833v-2.134c0-.46.373-.834.834-.834a1.667%201.667%200%200%200%200-3.333.833.833%200%200%201-.834-.833V6A.833.833%200%200%200%2018%205.167h-3.333a.833.833%200%200%201-.834-.834%201.667%201.667%200%201%200-3.333%200c0%20.46-.373.834-.833.834H5.5A.833.833%200%200%200%204.667%206v2.605a3.335%203.335%200%200%201%200%206.457V18.5c0%20.46.373.833.833.833h2.305a3.334%203.334%200%200%201%206.533%200M20.5%2018.5A2.5%202.5%200%200%201%2018%2021h-4.434a.833.833%200%200%201-.832-.888l.004-.112a1.667%201.667%200%201%200-3.33.112.833.833%200%200%201-.831.888H5.5A2.5%202.5%200%200%201%203%2018.5v-4.167c0-.46.373-.833.833-.833a1.667%201.667%200%200%200%200-3.333A.833.833%200%200%201%203%209.333V6a2.5%202.5%200%200%201%202.5-2.5h3.438a3.335%203.335%200%200%201%206.457%200H18A2.5%202.5%200%200%201%2020.5%206v4.637a3.335%203.335%200%200%201%200%206.457z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
 }
-#visible-controls-extensions { position: fixed !important; right: var(--vc-page-right, 0px); top: var(--vc-page-top, 0px); }
+#visible-controls-overlay button:not(:disabled):hover { background: var(--toolbarbutton-hover-background, #8883); }
+#visible-controls-overlay button:not(:disabled):active { background: var(--toolbarbutton-active-background, #8885); }
 #visible-controls-overlay button:disabled { opacity: .45; cursor: default; }
-#visible-controls-overlay button:focus-visible { outline: 1px solid currentColor; outline-offset: -3px; }
+#visible-controls-overlay button:focus-visible { outline: 1px solid var(--visible-controls-icon-color); outline-offset: -3px; }
 @media not (-moz-pref("mod.visible_controls.navigation")) { #visible-controls-back, #visible-controls-forward, #visible-controls-reload { display: none !important; } }
 @media not (-moz-pref("mod.visible_controls.extensions")) { #visible-controls-extensions { display: none !important; } }
 @media (prefers-reduced-motion: reduce) { #visible-controls-overlay, #visible-controls-extensions { transition: none; } }
