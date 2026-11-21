@@ -30,6 +30,18 @@
         "value": "compact"
       },
       {
+        "label": "Federnd",
+        "value": "spring"
+      },
+      {
+        "label": "Ausfalten",
+        "value": "sweep"
+      },
+      {
+        "label": "Schweben",
+        "value": "float"
+      },
+      {
         "label": "Keine",
         "value": "none"
       }

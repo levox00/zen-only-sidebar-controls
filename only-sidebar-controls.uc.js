@@ -2,7 +2,7 @@
 // @name           Only Sidebar Controls
 // @description    Floating controls for Zen's compact sidebar layout
 // @author         levox00
-// @version        1.1.1
+// @version        1.2.0
 // ==/UserScript==
 // This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 (() => {
@@ -49,6 +49,19 @@
   function motionFrames(preset, dx, dy) {
     if (preset === 'fade') return [{opacity: 0}, {opacity: 0.1}];
     if (preset === 'compact') return [{transform: `translate(${dx * 0.35}px, ${dy * 0.35}px) scale(0.96)`}, {transform: 'translate(0px, 0px) scale(1)'}];
+    if (preset === 'spring') return [
+      {transform: `translate(${dx}px, ${dy}px) scale(0.94)`, offset: 0},
+      {transform: `translate(${-dx * 0.07}px, ${-dy * 0.07}px) scale(1.025)`, offset: 0.72},
+      {transform: 'translate(0px, 0px) scale(1)', offset: 1}
+    ];
+    if (preset === 'sweep') return [
+      {transform: `translate(${dx}px, ${dy}px) scaleX(0.8)`, transformOrigin: dx > 0 ? 'right center' : 'left center'},
+      {transform: 'translate(0px, 0px) scaleX(1)', transformOrigin: dx > 0 ? 'right center' : 'left center'}
+    ];
+    if (preset === 'float') return [
+      {transform: `translate(${dx * 0.65}px, ${dy - 12}px) scale(0.92)`},
+      {transform: 'translate(0px, 0px) scale(1)'}
+    ];
     return [{transform: `translate(${dx}px, ${dy}px)`}, {transform: 'translate(0px, 0px)'}];
   }
   function motionDuration(speed) {

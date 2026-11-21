@@ -15,9 +15,14 @@ assert.match(helpers.motionFrames('slide',-120,10)[0].transform,/translate\(-120
 assert.match(helpers.motionFrames('compact',-100,0)[0].transform,/translate\(-35px, 0px\) scale\(0.96\)/);
 assert.equal(helpers.motionFrames('fade',0,0)[0].opacity,0);
 assert.equal(helpers.motionFrames('fade',0,0)[1].opacity,0.1);
+assert.equal(helpers.motionFrames('spring',-100,10).length,3);
+assert.ok(parseFloat(helpers.motionFrames('spring',-100,10)[1].transform.slice(10)) > 0);
+assert.equal(helpers.motionFrames('sweep',-100,0)[0].transformOrigin,'left center');
+assert.equal(helpers.motionFrames('sweep',100,0)[0].transformOrigin,'right center');
+assert.match(helpers.motionFrames('float',-100,0)[0].transform,/translate\(-65px, -12px\)/);
 const meta=JSON.parse(fs.readFileSync(path.join(__dirname,'..','theme.json'),'utf8'));
 const prefs=JSON.parse(fs.readFileSync(path.join(__dirname,'..','preferences.json'),'utf8'));
-assert.equal(meta.version,'1.1.1');
+assert.equal(meta.version,'1.2.0');
 for(const pref of prefs.filter(p=>p.type==='dropdown')) assert.ok(pref.options.some(o=>o.value===pref.defaultValue));
 for(const p of [meta.style.chrome, meta.preferences, ...Object.keys(meta.scripts)]) assert.ok(fs.existsSync(path.join(__dirname,'..',p)));
 console.log('Motion presets, speed, dropdown defaults, and Sine paths: OK');

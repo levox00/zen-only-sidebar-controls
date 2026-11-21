@@ -4,7 +4,7 @@ A Sine mod for Zen Browser that keeps Back, Forward, Reload and Extensions avail
 
 - All four controls sit together at the top-left of the page, with a background and hover colors taken from the current browser theme.
 - The overlay rests at 10% opacity and becomes fully visible on hover or keyboard focus.
-- When the sidebar closes, the controls animate from the sidebar toward the page. Choose Slide, Fade, Compact or None, and Fast, Normal or Slow in the mod settings. Reduced-motion settings suppress the movement.
+- When the sidebar closes, the controls animate from the sidebar toward the page. Choose Slide, Fade, Compact, Spring, Unfold, Float or None, and Fast, Normal or Slow in the mod settings. Reduced-motion settings suppress the movement.
 - It fades out and stops accepting clicks when the sidebar opens.
 - The controls follow the webpage edge when the separate top toolbar opens.
 - Navigation and the extensions button can be switched separately in the mod settings.
