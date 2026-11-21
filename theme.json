@@ -1,0 +1,14 @@
+{
+  "id": "only-sidebar-controls",
+  "name": "Only Sidebar Controls",
+  "description": "Floating back, forward, reload and extensions controls for Zen's compact sidebar.",
+  "author": "levox00",
+  "version": "1.0.0",
+  "homepage": "https://github.com/levox00/zen-only-sidebar-controls",
+  "readme": "README.md",
+  "style": { "chrome": "chrome.css" },
+  "scripts": { "only-sidebar-controls.uc.js": { "include": ["chrome://browser/content/browser.xhtml"] } },
+  "preferences": "preferences.json",
+  "tags": ["sidebar", "compact", "navigation"],
+  "fork": ["zen"]
+}

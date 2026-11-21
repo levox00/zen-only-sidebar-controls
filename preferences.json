@@ -1,0 +1,14 @@
+[
+  {
+    "property": "mod.visible_controls.navigation",
+    "label": "Navigation schwach anzeigen",
+    "type": "checkbox",
+    "defaultValue": true
+  },
+  {
+    "property": "mod.visible_controls.extensions",
+    "label": "Erweiterungsmenü schwach anzeigen",
+    "type": "checkbox",
+    "defaultValue": true
+  }
+]
