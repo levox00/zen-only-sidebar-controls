@@ -2,7 +2,7 @@
 // @name           Only Sidebar Controls
 // @description    Floating controls for Zen's compact sidebar layout
 // @author         levox00
-// @version        1.0.0
+// @version        1.0.1
 // ==/UserScript==
 // This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 (() => {
@@ -124,6 +124,12 @@
     if (pending) { Services.obs.removeObserver(pending, 'browser-delayed-startup-finished'); pending = null; }
     if (cleanupInstance) { cleanupInstance(); cleanupInstance = null; }
     window.removeEventListener('unload', cleanup);
+  }
+  // Sine may not initialise checkbox defaults until the settings dialog opens.
+  // Default-branch values preserve all existing user choices.
+  const defaults = Services.prefs.getDefaultBranch('');
+  for (const name of ['mod.visible_controls.navigation', 'mod.visible_controls.extensions']) {
+    if (Services.prefs.getPrefType(name) === 0) defaults.setBoolPref(name, true);
   }
   if (typeof window.addUnloadListener === 'function') window.addUnloadListener(cleanup);
   window.addEventListener('unload', cleanup, {once: true});

@@ -14,7 +14,7 @@ A Sine mod for Zen Browser that keeps Back, Forward, Reload and Extensions avail
 2. Open Zen Settings → Sine Mods. For a locally installed JavaScript mod, allow JavaScript from unofficial sources in Sine if required.
 3. In the field for adding a mod from GitHub, enter `https://github.com/levox00/zen-only-sidebar-controls`.
 4. Enable **Only Sidebar Controls**. Restart Zen if Sine asks you to.
-5. Open its settings to toggle navigation and extensions independently.
+5. Open its settings to toggle navigation and extensions independently. Both default to enabled, without overwriting existing choices.
 
 This mod executes privileged browser UI JavaScript through Sine; install only code you trust. It does not require the old Visible Controls AutoConfig loader. If an older manually installed Visible Controls script is still active, disable or remove the old installation before enabling this mod; two installations can interfere. Tab RAM Hover is a separate mod.
 
