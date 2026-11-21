@@ -2,7 +2,7 @@
 // @name           Only Sidebar Controls
 // @description    Floating controls for Zen's compact sidebar layout
 // @author         levox00
-// @version        1.1.0
+// @version        1.1.1
 // ==/UserScript==
 // This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
 (() => {
@@ -52,7 +52,7 @@
     return [{transform: `translate(${dx}px, ${dy}px)`}, {transform: 'translate(0px, 0px)'}];
   }
   function motionDuration(speed) {
-    return ({fast: 150, normal: 210, slow: 280})[speed] ?? 210;
+    return ({fast: 240, normal: 400, slow: 650})[speed] ?? 400;
   }
   function rememberSidebarOrigin() {
     const side = toolbox.getBoundingClientRect();
